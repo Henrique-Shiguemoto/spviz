@@ -8,6 +8,11 @@ import numpy as np
 
 app = Dash(__name__)
 
+colors = {
+    'background': '#111111',
+    'text': '#7FDBFF'
+}
+
 # assume you have a "long-form" data frame
 # see https://plotly.com/python/px-arguments/ for more options
 df = pd.read_csv("data/sp_ratings.csv")
@@ -32,17 +37,23 @@ fig = px.bar(df, x=x_range,
                  labels={"x" : "Season", "y" : "Average Rating"}, 
                  color=x_range)
 
+fig.update_layout(
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text']
+)
+
 app.layout = html.Div(children=[
-    html.H1(children='South Park Data Visualization'),
+    html.H1(children='South Park Data Visualization',style={'textAlign': 'center', 'color': colors['text']}),
     html.Div(children='''
         This app shows ratings for each season of South Park (from the 1st to 21st).
-    '''),
+    ''', style={ 'textAlign': 'center', 'color': colors['text']}),
 
     dcc.Graph(
         id='season-ratings-bar-chart',
         figure=fig
     )
-])
+], style={'background-color': colors['background']})
 
 if __name__ == '__main__':
     app.run_server(debug=True)
