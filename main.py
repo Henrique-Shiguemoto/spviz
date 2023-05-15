@@ -51,31 +51,31 @@ fig = px.bar(df, x=x_range,
 min_table_range = 0
 max_table_range = len(df[df['season_number'] == 1]) - 1
 app.layout = html.Div(children=[
-    html.H1(children='South Park Data Visualization'),
-    html.Div(children='''
-        This app shows ratings for each season of South Park (from the 1st to 21st).
-    '''),
-
-    dcc.Graph(
-        id='season-ratings-bar-chart',
-        figure=fig
-    ),
-
-    html.Label('Select a Season:'),
-    dcc.Dropdown(options = df['season_number'].unique(), value = 1, id = 'season_dropdown'),
-
-    html.Table(children = [
-        html.Thead(
-            html.Tr([html.Th(col) for col in table_dataframe.columns])
-        ),
-        html.Tbody([
-            html.Tr([
-                html.Td(table_dataframe.iloc[i][col]) for col in table_dataframe.columns
-            ]) for i in range(min_table_range, max_table_range)
-        ])
-    ], id = 'season_table')
+    html.Div(children=[
+        html.H1(children='South Park Data Visualization'),
+        html.H3(children='This app shows ratings for each season of South Park (from the 1st to 21st).'),
+        dcc.Graph(
+            id='season-ratings-bar-chart',
+            figure=fig
+        )
+    ], style={'width': '49%', 'display': 'inline-block'}),
+    html.Div(children=[
+        html.Label('Select a Season:'),
+        dcc.Dropdown(options = df['season_number'].unique(), value = 1, id = 'season_dropdown'),
+        html.Table(children = [
+            html.Thead(
+                html.Tr([html.Th(col) for col in table_dataframe.columns])
+            ),
+            html.Tbody([
+                html.Tr([
+                    html.Td(table_dataframe.iloc[i][col]) for col in table_dataframe.columns
+                ]) for i in range(min_table_range, max_table_range)
+            ])
+        ], id = 'season_table')
+    ], style={'width': '49%', 'display': 'inline-block'})
 ])
 
+# updates the table
 @app.callback(
     Output(component_id='season_table', component_property='children'),
     Input(component_id='season_dropdown', component_property='value')
