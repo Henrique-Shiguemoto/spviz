@@ -48,6 +48,8 @@ fig = px.bar(df, x=x_range,
                  labels={"x" : "Season", "y" : "Average Rating"}, 
                  color=x_range)
 
+fig1 = px.line(df, x=df['season_number'].unique(), y=df.groupby(['season_number'])['season_number'].count(), title = "Episode Count per Season")
+
 min_table_range = 0
 max_table_range = len(df[df['season_number'] == 1]) - 1
 app.layout = html.Div(children=[
@@ -72,7 +74,11 @@ app.layout = html.Div(children=[
                 ]) for i in range(min_table_range, max_table_range)
             ])
         ], id = 'season_table')
-    ], style={'width': '49%', 'display': 'inline-block'})
+    ], style={'width': '49%', 'display': 'inline-block'}),
+    dcc.Graph(
+        id='season-episode-quantity',
+        figure=fig1
+    )
 ])
 
 # updates the table

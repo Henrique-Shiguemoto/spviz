@@ -1,6 +1,6 @@
 # South Park Viz
 
-This is a simple dashboard about the South Park show.
+This is a simple dashboard about the South Park show. Just learning plotly dash...
 
 # Dataset
 
