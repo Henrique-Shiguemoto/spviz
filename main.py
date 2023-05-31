@@ -8,6 +8,11 @@ import numpy as np
 
 app = Dash(__name__)
 
+colors = {
+    'background': '#111111',
+    'text': '#7FDBFF'
+}
+
 # assume you have a "long-form" data frame
 # see https://plotly.com/python/px-arguments/ for more options
 df = pd.read_csv("data/sp_ratings.csv")
@@ -48,11 +53,25 @@ fig = px.bar(df, x=x_range,
                  labels={"x" : "Season", "y" : "Average Rating"}, 
                  color=x_range)
 
+# layout customization
+fig.update_layout(
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text']
+)
+
 fig1 = px.line(df, x=df['season_number'].unique(), y=df.groupby(['season_number'])['season_number'].count(), title = "Episode Count per Season")
+
+# layout customization
+fig1.update_layout(
+    plot_bgcolor=colors['background'],
+    paper_bgcolor=colors['background'],
+    font_color=colors['text']
+)
 
 min_table_range = 0
 max_table_range = len(df[df['season_number'] == 1]) - 1
-app.layout = html.Div(children=[
+app.layout = html.Div(style={'backgroundColor':colors['background'], 'color':colors['text']}, children=[
     html.Div(children=[
         html.H1(children='South Park Data Visualization'),
         html.H3(children='This app shows ratings for each season of South Park (from the 1st to 21st).'),
@@ -63,7 +82,7 @@ app.layout = html.Div(children=[
     ], style={'width': '49%', 'display': 'inline-block'}),
     html.Div(children=[
         html.Label('Select a Season:'),
-        dcc.Dropdown(options = df['season_number'].unique(), value = 1, id = 'season_dropdown'),
+        dcc.Dropdown(options = df['season_number'].unique(), value = 1, id = 'season_dropdown', style={'color':colors['background']}),
         html.Table(children = [
             html.Thead(
                 html.Tr([html.Th(col) for col in table_dataframe.columns])
